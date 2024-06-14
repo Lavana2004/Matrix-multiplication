@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Multiplication</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: url('https://cdn.pixabay.com/photo/2016/04/06/10/08/background-1311251_640.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+        .container {
+            background: rgba(85, 133, 196, 0.75);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+            animation: fadeIn 1s ease-in-out;
+            transition: transform 0.3s ease;
+        }
+        .container:hover {
+            transform: translateY(-10px);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #000000;
+            animation: glow 1.5s infinite alternate;
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #00E676, 0 0 20px #00E676, 0 0 30px #00E676; }
+            to { text-shadow: 0 0 20px #00E676, 0 0 30px #00E676, 0 0 40px #00E676; }
+        }
+        input[type="number"] {
+            padding: 12px;
+            border: 2px solid #00E676;
+            border-radius: 8px;
+            margin: 5px;
+            font-size: 1em;
+            color: #333;
+            width: calc(20% - 28px);
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input[type="number"]:focus {
+            border-color: #FFD700;
+            box-shadow: 0 0 10px #FFD700;
+        }
+        button {
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #FF4081, #FF80AB);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            font-size: 1.1em;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        button:hover {
+            background: linear-gradient(45deg, #C2185B, #E91E63);
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(195, 36, 36, 0.3);
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.3em;
+            color: #FFD700;
+            animation: slideIn 0.5s ease-in-out;
+            transition: color 0.3s ease;
+        }
+        .result p:hover {
+            color: #FF4081;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        table {
+            margin: 20px auto 0;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        td, th {
+            border: 2px solid #FFD700;
+            padding: 10px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .info {
+            margin-top: 20px;
+            color: #FFD700;
+        }
+        @media (max-width: 800px) {
+            .container {
+                padding: 20px;
+            }
+            input[type="number"] {
+                padding: 10px;
+                width: calc(25% - 26px);
+            }
+            button {
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Matrix Multiplication</h2>
+        <div id="matrixA">
+            <h3>Matrix A (5x5)</h3>
+            <input type="number" id="a00" placeholder="A00">
+            <input type="number" id="a01" placeholder="A01">
+            <input type="number" id="a02" placeholder="A02">
+            <input type="number" id="a03" placeholder="A03">
+            <input type="number" id="a04" placeholder="A04">
+            <br>
+            <input type="number" id="a10" placeholder="A10">
+            <input type="number" id="a11" placeholder="A11">
+            <input type="number" id="a12" placeholder="A12">
+            <input type="number" id="a13" placeholder="A13">
+            <input type="number" id="a14" placeholder="A14">
+            <br>
+            <input type="number" id="a20" placeholder="A20">
+            <input type="number" id="a21" placeholder="A21">
+            <input type="number" id="a22" placeholder="A22">
+            <input type="number" id="a23" placeholder="A23">
+            <input type="number" id="a24" placeholder="A24">
+            <br>
+            <input type="number" id="a30" placeholder="A30">
+            <input type="number" id="a31" placeholder="A31">
+            <input type="number" id="a32" placeholder="A32">
+            <input type="number" id="a33" placeholder="A33">
+            <input type="number" id="a34" placeholder="A34">
+            <br>
+            <input type="number" id="a40" placeholder="A40">
+            <input type="number" id="a41" placeholder="A41">
+            <input type="number" id="a42" placeholder="A42">
+            <input type="number" id="a43" placeholder="A43">
+            <input type="number" id="a44" placeholder="A44">
+        </div>
+        <div id="matrixB">
+            <h3>Matrix B (5x5)</h3>
+            <input type="number" id="b00" placeholder="B00">
+            <input type="number" id="b01" placeholder="B01">
+            <input type="number" id="b02" placeholder="B02">
+            <input type="number" id="b03" placeholder="B03">
+            <input type="number" id="b04" placeholder="B04">
+            <br>
+            <input type="number" id="b10" placeholder="B10">
+            <input type="number" id="b11" placeholder="B11">
+            <input type="number" id="b12" placeholder="B12">
+            <input type="number" id="b13" placeholder="B13">
+            <input type="number" id="b14" placeholder="B14">
+            <br>
+            <input type="number" id="b20" placeholder="B20">
+            <input type="number" id="b21" placeholder="B21">
+            <input type="number" id="b22" placeholder="B22">
+            <input type="number" id="b23" placeholder="B23">
+            <input type="number" id="b24" placeholder="B24">
+            <br>
+            <input type="number" id="b30" placeholder="B30">
+            <input type="number" id="b31" placeholder="B31">
+            <input type="number" id="b32" placeholder="B32">
+            <input type="number" id="b33" placeholder="B33">
+            <input type="number" id="b34" placeholder="B34">
+            <br>
+            <input type="number" id="b40" placeholder="B40">
+            <input type="number" id="b41" placeholder="B41">
+            <input type="number" id="b42" placeholder="B42">
+            <input type="number" id="b43" placeholder="B43">
+            <input type="number" id="b44" placeholder="B44">
+        </div>
+        <button onclick="multiplyMatrices(false)">Multiply Matrices (Non-Recursive)</button>
+        <button onclick="multiplyMatrices(true)">Multiply Matrices (Recursive)</button>
+        <div class="result">
+            <h3>Result Matrix (5x5)</h3>
+            <div id="result"></div>
+            <div class="info">
+                <p id="timeComplexity"></p>
+                <p id="stepCount"></p>
+                <p id="executionTime"></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        let stepCount = 0;
+
+        function multiplyMatrices(isRecursive) {
+            let matrixA = [];
+            let matrixB = [];
+            for (let i = 0; i < 5; i++) {
+                matrixA[i] = [];
+                matrixB[i] = [];
+                for (let j = 0; j < 5; j++) {
+                    matrixA[i][j] = parseFloat(document.getElementById('a' + i + j).value) || 0;
+                    matrixB[i][j] = parseFloat(document.getElementById('b' + i + j).value) || 0;
+                }
+            }
+
+            stepCount = 0;
+            let startTime = performance.now();
+            let resultMatrix = isRecursive ? multiplyMatricesRecursive(matrixA, matrixB, 5) : multiplyMatricesNonRecursive(matrixA, matrixB);
+            let endTime = performance.now();
+
+            displayResult(resultMatrix);
+            displayMetrics(isRecursive, endTime - startTime);
+        }
+
+        function multiplyMatricesNonRecursive(matrixA, matrixB) {
+            let resultMatrix = [];
+            for (let i = 0; i < 5; i++) {
+                resultMatrix[i] = [];
+                for (let j = 0; j < 5; j++) {
+                    resultMatrix[i][j] = 0;
+                    for (let k = 0; k < 5; k++) {
+                        resultMatrix[i][j] += matrixA[i][k] * matrixB[k][j];
+                        stepCount++;
+                    }
+                }
+            }
+            return resultMatrix;
+        }
+
+        function multiplyMatricesRecursive(matrixA, matrixB, size) {
+            let resultMatrix = Array.from({ length: size }, () => Array(size).fill(0));
+            multiplyRecursive(matrixA, matrixB, resultMatrix, 0, 0, 0, size);
+            return resultMatrix;
+        }
+
+        function multiplyRecursive(matrixA, matrixB, resultMatrix, row, col, k, size) {
+            if (row >= size) return;
+
+            if (col < size) {
+                if (k < size) {
+                    resultMatrix[row][col] += matrixA[row][k] * matrixB[k][col];
+                    stepCount++;
+                    multiplyRecursive(matrixA, matrixB, resultMatrix, row, col, k + 1, size);
+                } else {
+                    multiplyRecursive(matrixA, matrixB, resultMatrix, row, col + 1, 0, size);
+                }
+            } else {
+                multiplyRecursive(matrixA, matrixB, resultMatrix, row + 1, 0, 0, size);
+            }
+        }
+
+        function displayResult(matrix) {
+            let resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '';
+            let table = document.createElement('table');
+            for (let i = 0; i < 5; i++) {
+                let row = document.createElement('tr');
+                for (let j = 0; j < 5; j++) {
+                    let cell = document.createElement('td');
+                    cell.textContent = matrix[i][j];
+                    row.appendChild(cell);
+                }
+                table.appendChild(row);
+            }
+            resultDiv.appendChild(table);
+        }
+
+        function displayMetrics(isRecursive, executionTime) {
+            const timeComplexity = isRecursive ? 'Time Complexity: O(n^3) (Recursive)' : 'Time Complexity: O(n^3) (Non-Recursive)';
+            const stepCountText = `Step Count: ${stepCount}`;
+            const executionTimeText = `Execution Time: ${executionTime.toFixed(2)} ms`;
+
+            document.getElementById('timeComplexity').textContent = timeComplexity;
+            document.getElementById('stepCount').textContent = stepCountText;
+            document.getElementById('executionTime').textContent = executionTimeText;
+        }
+    </script>
+</body>
+</html>
